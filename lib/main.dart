@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       theme: ThemeData(primarySwatch: Colors.blue, brightness: Brightness.dark),
-      home: const ElecityBillCalculator(),
+      home: ElecityBillCalculator(),
     );
   }
 }

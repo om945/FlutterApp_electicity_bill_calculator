@@ -1,14 +1,10 @@
+import 'package:electicity_bill_calculator/page.dart/details.dart';
 import 'package:flutter/material.dart';
 
-class ElecityBillCalculator extends StatefulWidget {
-  const ElecityBillCalculator({super.key});
+class ElecityBillCalculator extends StatelessWidget {
+  ElecityBillCalculator({super.key});
 
-  @override
-  State<ElecityBillCalculator> createState() => _ElecityBillCalculatorState();
-}
-
-class _ElecityBillCalculatorState extends State<ElecityBillCalculator> {
-  final unitcontroller = TextEditingController();
+  final TextEditingController _unit = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,17 +25,30 @@ class _ElecityBillCalculatorState extends State<ElecityBillCalculator> {
               child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
-                controller: unitcontroller,
+              TextFormField(
+                controller: _unit,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Enter Consumed Units',
+                  prefix: Text('Unit: '),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              ElevatedButton(onPressed: () {}, child: Text('Continue'))
+              ElevatedButton(
+                  onPressed: () {
+                    if (_unit.text.isEmpty ||
+                        int.tryParse(_unit.text) == null ||
+                        int.parse(_unit.text) <= 0 ||
+                        (_unit.text.contains(RegExp('[a-zA-Z]')))) {
+                      return;
+                    } else {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Bill(unit: _unit.text)));
+                    }
+                  },
+                  child: Text('Continue'))
             ],
           )),
         ));
