@@ -1,9 +1,19 @@
 import 'package:electicity_bill_calculator/page.dart/details.dart';
 import 'package:flutter/material.dart';
 
-class ElecityBillCalculator extends StatelessWidget {
-  ElecityBillCalculator({super.key});
+class ElecityBillCalculator extends StatefulWidget {
+  const ElecityBillCalculator({
+    super.key,
+  });
 
+  final double unit = 0.0;
+
+  @override
+  State<ElecityBillCalculator> createState() => _ElecityBillCalculatorState();
+}
+
+class _ElecityBillCalculatorState extends State<ElecityBillCalculator> {
+  // final TextEditingController _unit = TextEditingController();
   final TextEditingController _unit = TextEditingController();
 
   @override
@@ -21,36 +31,47 @@ class ElecityBillCalculator extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(10),
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              TextFormField(
-                controller: _unit,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Enter Consumed Units',
-                  prefix: Text('Unit: '),
-                ),
+              Text(
+                'Rent of your Metter = 138',
+                // textAlign: TextAlign.left,
               ),
-              SizedBox(
-                height: 20,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    controller: _unit,
+                    decoration: const InputDecoration(
+                      helperText: 'Please enter Unit below 1000',
+                      border: OutlineInputBorder(),
+                      labelText: 'Enter Consumed Units',
+                      prefix: Text('Unit :-  '),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (_unit.text.isEmpty ||
+                            int.tryParse(_unit.text) == null ||
+                            int.parse(_unit.text) <= 0 ||
+                            (_unit.text.contains(RegExp('[a-zA-Z]')))) {
+                          return;
+                        } else {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  Details(unit: double.parse(_unit.text))));
+                        }
+                      },
+                      child: Text('Continue'))
+                ],
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_unit.text.isEmpty ||
-                        int.tryParse(_unit.text) == null ||
-                        int.parse(_unit.text) <= 0 ||
-                        (_unit.text.contains(RegExp('[a-zA-Z]')))) {
-                      return;
-                    } else {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => Bill(unit: _unit.text)));
-                    }
-                  },
-                  child: Text('Continue'))
             ],
-          )),
+          ),
         ));
   }
 }
